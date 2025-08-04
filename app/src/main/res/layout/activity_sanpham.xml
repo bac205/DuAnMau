@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarSanPham"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:title="Quản lý sản phẩm"
+        android:titleTextColor="#FFFFFF"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <!-- Thanh tìm kiếm -->
+    <EditText
+        android:id="@+id/edtSearch"
+        android:layout_below="@id/toolbarSanPham"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="10dp"
+        android:hint="Nhập tên sản phẩm..."
+        android:padding="10dp"
+        android:drawableLeft="@android:drawable/ic_menu_search" />
+
+    <!-- Dòng tiêu đề + icon giỏ hàng -->
+    <TextView
+        android:id="@+id/tvDanhSach"
+        android:layout_below="@id/edtSearch"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="Danh sách sản phẩm"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/imgGioHang"
+        android:layout_alignBaseline="@id/tvDanhSach"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_cart" />
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcSanPham"
+        android:layout_below="@id/tvDanhSach"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@+id/btnAdd"
+        android:padding="8dp" />
+
+    <!-- Nút thêm -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add"
+        android:contentDescription="Thêm sản phẩm"
+        android:backgroundTint="#C22BDC" />
+
+</RelativeLayout>
