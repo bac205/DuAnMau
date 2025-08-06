@@ -34,14 +34,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <ImageView
-        android:id="@+id/imgGioHang"
-        android:layout_alignBaseline="@id/tvDanhSach"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="12dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_cart" />
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView

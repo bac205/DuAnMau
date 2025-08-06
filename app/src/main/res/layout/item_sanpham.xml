@@ -46,8 +46,7 @@
             android:textColor="#FF5722"
             android:textSize="14sp"
             android:layout_toStartOf="@+id/btnSua" />
-
-        <!-- Icon sửa -->
+        <!-- Icon sửa (ngoài cùng bên phải) -->
         <ImageView
             android:id="@+id/btnSua"
             android:layout_width="24dp"
@@ -57,7 +56,7 @@
             android:layout_alignTop="@id/tvTenSanPham"
             android:layout_marginEnd="8dp" />
 
-        <!-- Icon xoá -->
+        <!-- Icon xoá (nằm bên trái của sửa) -->
         <ImageView
             android:id="@+id/btnXoa"
             android:layout_width="24dp"
@@ -66,5 +65,16 @@
             android:layout_toStartOf="@id/btnSua"
             android:layout_alignTop="@id/tvTenSanPham"
             android:layout_marginEnd="8dp" />
+
+        <!-- Icon giỏ hàng (nằm bên trái của xoá) -->
+        <ImageView
+            android:id="@+id/imgGioHang"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_cart"
+            android:layout_toStartOf="@id/btnXoa"
+            android:layout_alignTop="@id/tvTenSanPham"
+            android:layout_marginEnd="8dp" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
