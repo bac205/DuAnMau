@@ -26,15 +26,27 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
         this.list = list;
     }
 
+    // Interface callback cho sự kiện xóa và sửa
+    public interface OnItemActionListener {
+        void onDelete(Sanpham sp, int position);
+        void onEdit(Sanpham sp, int position);
+    }
+    private OnItemActionListener actionListener;
+    public void setOnItemActionListener(OnItemActionListener listener) {
+        this.actionListener = listener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgSP;
         TextView tvTenSP, tvGia;
-
+        ImageView btnXoa, btnSua;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgSP = itemView.findViewById(R.id.imgSanPham);
             tvTenSP = itemView.findViewById(R.id.tvTenSanPham);
             tvGia = itemView.findViewById(R.id.tvGiaSanPham);
+            btnXoa = itemView.findViewById(R.id.btnXoa);
+            btnSua = itemView.findViewById(R.id.btnSua);
         }
     }
 
@@ -50,14 +62,18 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
         Sanpham sp = list.get(position);
         holder.tvTenSP.setText(sp.getTenSP());
         holder.tvGia.setText("Giá: " + sp.getGia() + " VNĐ");
-
-        // Load hình từ tên file drawable
         int resID = context.getResources().getIdentifier(sp.getHinhAnh(), "drawable", context.getPackageName());
         holder.imgSP.setImageResource(resID);
-
-        // Sự kiện click vào ảnh sản phẩm
         holder.imgSP.setOnClickListener(v -> {
             // TODO: mở màn chi tiết (tí mình sẽ làm sau)
+        });
+        // Sự kiện xóa
+        holder.btnXoa.setOnClickListener(v -> {
+            if (actionListener != null) actionListener.onDelete(sp, position);
+        });
+        // Sự kiện sửa
+        holder.btnSua.setOnClickListener(v -> {
+            if (actionListener != null) actionListener.onEdit(sp, position);
         });
     }
 
