@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarGioHang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:title="Giỏ hàng"
+        android:titleTextColor="#FFFFFF"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <!-- Chọn khách hàng -->
+    <LinearLayout
+        android:id="@+id/layoutChonKH"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarGioHang"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="#F5F5F5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Khách hàng: "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvKhachHang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Chưa chọn"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp" />
+
+        <Button
+            android:id="@+id/btnChonKH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn KH"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- RecyclerView giỏ hàng -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcGioHang"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/layoutChonKH"
+        android:layout_above="@+id/layoutTongTien"
+        android:padding="8dp" />
+
+    <!-- Tổng tiền và thanh toán -->
+    <LinearLayout
+        android:id="@+id/layoutTongTien"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        android:elevation="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tổng tiền: "
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvTongTien"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 VNĐ"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FF5722" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnThanhToan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="THANH TOÁN"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+</RelativeLayout>

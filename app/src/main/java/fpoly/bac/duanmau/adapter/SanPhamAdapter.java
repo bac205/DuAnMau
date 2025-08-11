@@ -75,6 +75,8 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
         holder.btnSua.setOnClickListener(v -> {
             if (actionListener != null) actionListener.onEdit(sp, position);
         });
+
+
     }
 
     @Override

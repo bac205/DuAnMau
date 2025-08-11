@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "Supermarket.db";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 8;
 
     public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -36,15 +36,101 @@ public class DbHelper extends SQLiteOpenHelper {
 
         // Thêm dữ liệu mẫu cho sản phẩm
         db.execSQL("INSERT INTO SanPham (tenSP, gia, hinhAnh) VALUES " +
-                "('Táo Mỹ', 30000, 'img_taomi')," +
-                "('Nho Hàn', 45000, 'img_nhohan')," +
-                "('Chuối Việt Nam', 20000, 'img_chuoivn')");
+                "('Táo Mỹ', 30000, 'img_product')," +
+                "('Nho Hàn', 45000, 'img_product')," +
+                "('Chuối Việt Nam', 20000, 'img_product')," +
+                "('Cam Sành', 25000, 'img_product')," +
+                "('Xoài Cát Hòa Lộc', 35000, 'img_product')," +
+                "('Dưa Hấu', 15000, 'img_product')," +
+                "('Mít Thái', 40000, 'img_product')," +
+                "('Sầu Riêng', 80000, 'img_product')");
+
+        // Tạo bảng quản lý nhân viên (khác với bảng NhanVien dùng đăng nhập)
+        String createNhanVienQL = "CREATE TABLE NhanVienQL (" +
+                "maNV TEXT PRIMARY KEY," +
+                "ten TEXT NOT NULL," +
+                "diaChi TEXT," +
+                "luong REAL NOT NULL," +
+                "chucVu TEXT," +
+                "hinhAnh TEXT)";
+        db.execSQL(createNhanVienQL);
+
+        // Dữ liệu mẫu nhân viên theo yêu cầu
+        db.execSQL("INSERT INTO NhanVienQL (maNV, ten, diaChi, luong, chucVu, hinhAnh) VALUES " +
+                "('NV001','Nguyễn Văn A','Hà Nội',6000000,'Nhân viên','img_nhanvien')," +
+                "('NV002','Nguyễn Văn B','Hà Nội',6000000,'Nhân viên','img_nhanvien')," +
+                "('NV003','Nguyễn Văn C','Hải Phòng',6000000,'Nhân viên','img_nhanvien')," +
+                "('NV004','Nguyễn Văn D','Thanh Hoá',10000000,'Quản lí','img_nhanvien')");
+
+        // Tạo bảng danh mục
+        String createDanhMuc = "CREATE TABLE DanhMucQL (" +
+                "maDM TEXT PRIMARY KEY," +
+                "ten TEXT NOT NULL," +
+                "hinhAnh TEXT)";
+        db.execSQL(createDanhMuc);
+        // Dữ liệu mẫu danh mục
+        db.execSQL("INSERT INTO DanhMucQL (maDM, ten, hinhAnh) VALUES " +
+                "('DM001','Sữa','img_danhmuc')," +
+                "('DM002','Kẹo','img_danhmuc')," +
+                "('DM003','Đồ Uống','img_danhmuc')");
+
+        // Tạo bảng khách hàng
+        String createKhachHang = "CREATE TABLE KhachHangQL (" +
+                "maKH TEXT PRIMARY KEY," +
+                "ten TEXT NOT NULL," +
+                "diaChi TEXT," +
+                "email TEXT," +
+                "sdt TEXT," +
+                "hinhAnh TEXT)";
+        db.execSQL(createKhachHang);
+        // Dữ liệu mẫu khách hàng theo yêu cầu
+        db.execSQL("INSERT INTO KhachHangQL (maKH, ten, diaChi, email, sdt, hinhAnh) VALUES " +
+                "('KH001','Lê Văn Hậu','101 Quang Trung Hà Nội','kh1@gmail.com','0968472059','img_kh')," +
+                "('KH002','Nguyễn Thuỳ Linh','29 Hàng Buồm Hà Nội','linh@gmail.com','09578285938','img_kh')," +
+                "('KH003','Nguyễn Thuỳ Tiên','37 Quận 6 TP Hồ Chí Minh','trung12@gmail.com','0385948573','img_kh')," +
+                "('KH004','Nguyễn Trung Kiên','101 Hải Phòng','th@gmail.com','0957284956','img_kh')");
+
+        // Tạo bảng giỏ hàng
+        String createGioHang = "CREATE TABLE GioHang (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "maSP INTEGER NOT NULL," +
+                "tenSP TEXT NOT NULL," +
+                "gia REAL NOT NULL," +
+                "soLuong INTEGER NOT NULL," +
+                "hinhAnh TEXT)";
+        db.execSQL(createGioHang);
+
+        // Tạo bảng hóa đơn
+        String createHoaDon = "CREATE TABLE HoaDon (" +
+                "maHD INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "maKH TEXT NOT NULL," +
+                "tenKH TEXT NOT NULL," +
+                "ngayTao TEXT NOT NULL," +
+                "tongTien REAL NOT NULL)";
+        db.execSQL(createHoaDon);
+
+        // Tạo bảng chi tiết hóa đơn
+        String createChiTietHD = "CREATE TABLE ChiTietHD (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "maHD INTEGER NOT NULL," +
+                "maSP INTEGER NOT NULL," +
+                "tenSP TEXT NOT NULL," +
+                "gia REAL NOT NULL," +
+                "soLuong INTEGER NOT NULL," +
+                "thanhTien REAL NOT NULL)";
+        db.execSQL(createChiTietHD);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS NhanVien");
         db.execSQL("DROP TABLE IF EXISTS SanPham");
+        db.execSQL("DROP TABLE IF EXISTS NhanVienQL");
+        db.execSQL("DROP TABLE IF EXISTS DanhMucQL");
+        db.execSQL("DROP TABLE IF EXISTS KhachHangQL");
+        db.execSQL("DROP TABLE IF EXISTS GioHang");
+        db.execSQL("DROP TABLE IF EXISTS HoaDon");
+        db.execSQL("DROP TABLE IF EXISTS ChiTietHD");
         onCreate(db);
     }
 
@@ -97,5 +183,284 @@ public class DbHelper extends SQLiteOpenHelper {
     public int deleteSanPham(int maSP) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete("SanPham", "maSP=?", new String[]{String.valueOf(maSP)});
+    }
+
+    // ================= NhanVienQL CRUD =================
+    public java.util.ArrayList<fpoly.bac.duanmau.model.NhanVien> getAllNhanVienQL() {
+        java.util.ArrayList<fpoly.bac.duanmau.model.NhanVien> list = new java.util.ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT * FROM NhanVienQL ORDER BY maNV", null);
+        if (cursor.moveToFirst()) {
+            do {
+                String maNV = cursor.getString(cursor.getColumnIndexOrThrow("maNV"));
+                String ten = cursor.getString(cursor.getColumnIndexOrThrow("ten"));
+                String diaChi = cursor.getString(cursor.getColumnIndexOrThrow("diaChi"));
+                double luong = cursor.getDouble(cursor.getColumnIndexOrThrow("luong"));
+                String chucVu = cursor.getString(cursor.getColumnIndexOrThrow("chucVu"));
+                String hinhAnh = cursor.getString(cursor.getColumnIndexOrThrow("hinhAnh"));
+                list.add(new fpoly.bac.duanmau.model.NhanVien(maNV, ten, diaChi, luong, chucVu, hinhAnh));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    public long insertNhanVienQL(fpoly.bac.duanmau.model.NhanVien nv) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("maNV", nv.getMaNV());
+        values.put("ten", nv.getTen());
+        values.put("diaChi", nv.getDiaChi());
+        values.put("luong", nv.getLuong());
+        values.put("chucVu", nv.getChucVu());
+        values.put("hinhAnh", nv.getHinhAnh());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.insert("NhanVienQL", null, values);
+    }
+
+    public int updateNhanVienQL(fpoly.bac.duanmau.model.NhanVien nv) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("ten", nv.getTen());
+        values.put("diaChi", nv.getDiaChi());
+        values.put("luong", nv.getLuong());
+        values.put("chucVu", nv.getChucVu());
+        values.put("hinhAnh", nv.getHinhAnh());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.update("NhanVienQL", values, "maNV=?", new String[]{nv.getMaNV()});
+    }
+
+    public int deleteNhanVienQL(String maNV) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("NhanVienQL", "maNV=?", new String[]{maNV});
+    }
+
+    // ================= DanhMucQL CRUD =================
+    public java.util.ArrayList<fpoly.bac.duanmau.model.DanhMuc> getAllDanhMucQL() {
+        java.util.ArrayList<fpoly.bac.duanmau.model.DanhMuc> list = new java.util.ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT * FROM DanhMucQL ORDER BY maDM", null);
+        if (cursor.moveToFirst()) {
+            do {
+                String maDM = cursor.getString(cursor.getColumnIndexOrThrow("maDM"));
+                String ten = cursor.getString(cursor.getColumnIndexOrThrow("ten"));
+                String hinhAnh = cursor.getString(cursor.getColumnIndexOrThrow("hinhAnh"));
+                list.add(new fpoly.bac.duanmau.model.DanhMuc(maDM, ten, hinhAnh));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    public long insertDanhMucQL(fpoly.bac.duanmau.model.DanhMuc dm) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("maDM", dm.getMaDM());
+        values.put("ten", dm.getTen());
+        values.put("hinhAnh", dm.getHinhAnh());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.insert("DanhMucQL", null, values);
+    }
+
+    public int updateDanhMucQL(fpoly.bac.duanmau.model.DanhMuc dm) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("ten", dm.getTen());
+        values.put("hinhAnh", dm.getHinhAnh());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.update("DanhMucQL", values, "maDM=?", new String[]{dm.getMaDM()});
+    }
+
+    public int deleteDanhMucQL(String maDM) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("DanhMucQL", "maDM=?", new String[]{maDM});
+    }
+
+    // ================= KhachHangQL CRUD =================
+    public java.util.ArrayList<fpoly.bac.duanmau.model.KhachHang> getAllKhachHangQL() {
+        java.util.ArrayList<fpoly.bac.duanmau.model.KhachHang> list = new java.util.ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT * FROM KhachHangQL ORDER BY maKH", null);
+        if (cursor.moveToFirst()) {
+            do {
+                String maKH = cursor.getString(cursor.getColumnIndexOrThrow("maKH"));
+                String ten = cursor.getString(cursor.getColumnIndexOrThrow("ten"));
+                String diaChi = cursor.getString(cursor.getColumnIndexOrThrow("diaChi"));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+                String sdt = cursor.getString(cursor.getColumnIndexOrThrow("sdt"));
+                String hinhAnh = cursor.getString(cursor.getColumnIndexOrThrow("hinhAnh"));
+                list.add(new fpoly.bac.duanmau.model.KhachHang(maKH, ten, diaChi, email, sdt, hinhAnh));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    public long insertKhachHangQL(fpoly.bac.duanmau.model.KhachHang kh) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("maKH", kh.getMaKH());
+        values.put("ten", kh.getTen());
+        values.put("diaChi", kh.getDiaChi());
+        values.put("email", kh.getEmail());
+        values.put("sdt", kh.getSdt());
+        values.put("hinhAnh", kh.getHinhAnh());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.insert("KhachHangQL", null, values);
+    }
+
+    public int updateKhachHangQL(fpoly.bac.duanmau.model.KhachHang kh) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("ten", kh.getTen());
+        values.put("diaChi", kh.getDiaChi());
+        values.put("email", kh.getEmail());
+        values.put("sdt", kh.getSdt());
+        values.put("hinhAnh", kh.getHinhAnh());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.update("KhachHangQL", values, "maKH=?", new String[]{kh.getMaKH()});
+    }
+
+    public int deleteKhachHangQL(String maKH) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("KhachHangQL", "maKH=?", new String[]{maKH});
+    }
+
+    // ================= GioHang CRUD =================
+    public java.util.ArrayList<fpoly.bac.duanmau.model.GioHang> getAllGioHang() {
+        java.util.ArrayList<fpoly.bac.duanmau.model.GioHang> list = new java.util.ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT * FROM GioHang", null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                int maSP = cursor.getInt(cursor.getColumnIndexOrThrow("maSP"));
+                String tenSP = cursor.getString(cursor.getColumnIndexOrThrow("tenSP"));
+                double gia = cursor.getDouble(cursor.getColumnIndexOrThrow("gia"));
+                int soLuong = cursor.getInt(cursor.getColumnIndexOrThrow("soLuong"));
+                String hinhAnh = cursor.getString(cursor.getColumnIndexOrThrow("hinhAnh"));
+                list.add(new fpoly.bac.duanmau.model.GioHang(id, maSP, tenSP, gia, soLuong, hinhAnh));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    public long insertGioHang(fpoly.bac.duanmau.model.GioHang gh) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("maSP", gh.getMaSP());
+        values.put("tenSP", gh.getTenSP());
+        values.put("gia", gh.getGia());
+        values.put("soLuong", gh.getSoLuong());
+        values.put("hinhAnh", gh.getHinhAnh());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.insert("GioHang", null, values);
+    }
+
+    public int updateGioHang(fpoly.bac.duanmau.model.GioHang gh) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("soLuong", gh.getSoLuong());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.update("GioHang", values, "id=?", new String[]{String.valueOf(gh.getId())});
+    }
+
+    public int deleteGioHang(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("GioHang", "id=?", new String[]{String.valueOf(id)});
+    }
+
+    public void clearGioHang() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("GioHang", null, null);
+    }
+
+    // ================= HoaDon CRUD =================
+    public long insertHoaDon(fpoly.bac.duanmau.model.HoaDon hd) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("maKH", hd.getMaKH());
+        values.put("tenKH", hd.getTenKH());
+        values.put("ngayTao", hd.getNgayTao().toString());
+        values.put("tongTien", hd.getTongTien());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.insert("HoaDon", null, values);
+    }
+
+    public long insertChiTietHD(int maHD, fpoly.bac.duanmau.model.GioHang gh) {
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("maHD", maHD);
+        values.put("maSP", gh.getMaSP());
+        values.put("tenSP", gh.getTenSP());
+        values.put("gia", gh.getGia());
+        values.put("soLuong", gh.getSoLuong());
+        values.put("thanhTien", gh.getThanhTien());
+        SQLiteDatabase db = getWritableDatabase();
+        return db.insert("ChiTietHD", null, values);
+    }
+
+    // Method debug để kiểm tra database
+    public void debugDatabase() {
+        SQLiteDatabase db = getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+        android.util.Log.d("DbHelper", "=== TABLES IN DATABASE ===");
+        if (cursor.moveToFirst()) {
+            do {
+                String tableName = cursor.getString(0);
+                android.util.Log.d("DbHelper", "Table: " + tableName);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        // Kiểm tra số lượng sản phẩm
+        try {
+            cursor = db.rawQuery("SELECT COUNT(*) FROM SanPham", null);
+            if (cursor.moveToFirst()) {
+                int count = cursor.getInt(0);
+                android.util.Log.d("DbHelper", "Số sản phẩm: " + count);
+            }
+            cursor.close();
+        } catch (Exception e) {
+            android.util.Log.e("DbHelper", "Lỗi khi đếm sản phẩm: " + e.getMessage());
+        }
+    }
+
+    // Method thêm sản phẩm mẫu nếu database trống
+    public void addSampleProductsIfEmpty() {
+        android.util.Log.d("DbHelper", "Kiểm tra và thêm sản phẩm mẫu...");
+        
+        // Kiểm tra số lượng sản phẩm hiện tại
+        SQLiteDatabase db = getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM SanPham", null);
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        
+        android.util.Log.d("DbHelper", "Số sản phẩm hiện tại: " + count);
+        
+        // Nếu không có sản phẩm, thêm sản phẩm mẫu
+        if (count == 0) {
+            android.util.Log.d("DbHelper", "Thêm sản phẩm mẫu...");
+            
+            // Thêm các sản phẩm mẫu
+            String[] products = {
+                "INSERT INTO SanPham (tenSP, gia, hinhAnh) VALUES ('Táo Mỹ', 30000, 'img_product')",
+                "INSERT INTO SanPham (tenSP, gia, hinhAnh) VALUES ('Nho Hàn', 45000, 'img_product')",
+                "INSERT INTO SanPham (tenSP, gia, hinhAnh) VALUES ('Chuối Việt Nam', 20000, 'img_product')",
+                "INSERT INTO SanPham (tenSP, gia, hinhAnh) VALUES ('Cam Sành', 25000, 'img_product')",
+                "INSERT INTO SanPham (tenSP, gia, hinhAnh) VALUES ('Xoài Cát Hòa Lộc', 35000, 'img_product')",
+                "INSERT INTO SanPham (tenSP, gia, hinhAnh) VALUES ('Dưa Hấu', 15000, 'img_product')",
+                "INSERT INTO SanPham (tenSP, gia, hinhAnh) VALUES ('Mít Thái', 40000, 'img_product')",
+                "INSERT INTO SanPham (tenSP, gia, hinhAnh) VALUES ('Sầu Riêng', 80000, 'img_product')"
+            };
+            
+            db = getWritableDatabase();
+            for (String sql : products) {
+                try {
+                    db.execSQL(sql);
+                    android.util.Log.d("DbHelper", "Đã thêm: " + sql);
+                } catch (Exception e) {
+                    android.util.Log.e("DbHelper", "Lỗi khi thêm: " + e.getMessage());
+                }
+            }
+            
+            android.util.Log.d("DbHelper", "Hoàn thành thêm sản phẩm mẫu");
+        } else {
+            android.util.Log.d("DbHelper", "Đã có sản phẩm, không cần thêm");
+        }
     }
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/imgKhachHang"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/img_kh" />
+
+        <TextView
+            android:id="@+id/tvTenKH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imgKhachHang"
+            android:layout_marginStart="12dp"
+            android:text="Tên KH"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvMaKH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/tvTenKH"
+            android:layout_alignParentEnd="true"
+            android:text="KH001"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvDiaChiKH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTenKH"
+            android:layout_toEndOf="@id/imgKhachHang"
+            android:layout_marginStart="12dp"
+            android:text="Địa chỉ"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvEmailKH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvDiaChiKH"
+            android:layout_toEndOf="@id/imgKhachHang"
+            android:layout_marginStart="12dp"
+            android:text="Email"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvSdtKH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvEmailKH"
+            android:layout_toEndOf="@id/imgKhachHang"
+            android:layout_marginStart="12dp"
+            android:text="SĐT"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/btnSuaKH"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_edit"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/tvMaKH"
+            android:layout_marginTop="8dp" />
+
+        <ImageView
+            android:id="@+id/btnXoaKH"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_delete"
+            android:layout_toStartOf="@id/btnSuaKH"
+            android:layout_alignTop="@id/btnSuaKH"
+            android:layout_marginEnd="8dp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
+
+
+
+

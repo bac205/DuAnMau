@@ -16,6 +16,11 @@
             android:name=".Login"
             android:exported="false" />
         <activity android:name=".SanPhamActivity" />
+        <activity android:name=".NhanVienActivity" />
+        <activity android:name=".DanhMucActivity" />
+        <activity android:name=".KhachHangActivity" />
+        <activity android:name=".GioHangActivity" />
+        <activity android:name=".HoaDonActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
