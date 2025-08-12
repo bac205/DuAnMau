@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+    ImageView imgDoanhThu;
     ImageView imgSanPham;
     TextView tvWelcome;
     LinearLayout layoutQuanLyNV, layoutThongKe;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         ImageView imgKhachHang = findViewById(R.id.imgKhachHang);
         ImageView imgHoaDon = findViewById(R.id.imgHoaDon);
         ImageView imgGioHang = findViewById(R.id.imgGioHang);
+        imgDoanhThu = findViewById(R.id.imgDoanhThu);
+        ImageView imgTopKhachHang = findViewById(R.id.imgTopKhachHang);
 
         imgSanPham.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +93,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        imgDoanhThu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MainActivity.this, TongDoanhThu.class);
+                startActivity(intent1);
+            }
+        });
+imgTopKhachHang.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent1 = new Intent(MainActivity.this, TopKhachHang.class);
+        startActivity(intent1);
+    }
+});
+
     }
 }
 

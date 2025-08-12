@@ -1,8 +1,12 @@
 package fpoly.bac.duanmau.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "Supermarket.db";
@@ -119,7 +123,50 @@ public class DbHelper extends SQLiteOpenHelper {
                 "soLuong INTEGER NOT NULL," +
                 "thanhTien REAL NOT NULL)";
         db.execSQL(createChiTietHD);
+
     }
+    // Lấy tổng doanh thu từ bảng HoaDon
+    public double getTongDoanhThu() {
+        double tongDoanhThu = 0;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT SUM(tongTien) FROM HoaDon", null);
+            if (cursor.moveToFirst()) {
+                tongDoanhThu = cursor.isNull(0) ? 0 : cursor.getDouble(0);
+            }
+        } catch (Exception e) {
+            android.util.Log.e("DbHelper", "Lỗi khi tính tổng doanh thu: " + e.getMessage());
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+        return tongDoanhThu;
+    }
+    public List<String> getTop3KhachHang() {
+        List<String> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT KH.ten, SUM(HD.tongTien) AS tongChiTieu " +
+                "FROM HoaDon HD " +
+                "JOIN KhachHangQL KH ON KH.maKH = HD.maKH " +
+                "GROUP BY KH.maKH " +
+                "ORDER BY tongChiTieu DESC " +
+                "LIMIT 3";
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String ten = cursor.getString(0);
+                double tong = cursor.getDouble(1);
+                list.add(ten + " - " + tong + " VNĐ");
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
