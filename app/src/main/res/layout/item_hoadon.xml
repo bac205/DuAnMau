@@ -37,6 +37,14 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#FF5722" />
+
+            <ImageView
+                android:id="@+id/btnXoaHD"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="12dp"
+                android:contentDescription="Xóa hóa đơn"
+                android:src="@drawable/ic_delete" />
         </LinearLayout>
 
         <TextView
@@ -59,3 +67,4 @@
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
+

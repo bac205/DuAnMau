@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,12 @@ import fpoly.bac.duanmau.model.HoaDon;
 public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHolder> {
     private Context context;
     private ArrayList<HoaDon> listHoaDon;
+
+    public interface OnItemActionListener {
+        void onDelete(HoaDon hoaDon, int position);
+    }
+    private OnItemActionListener actionListener;
+    public void setOnItemActionListener(OnItemActionListener listener) { this.actionListener = listener; }
 
     public HoaDonAdapter(Context context, ArrayList<HoaDon> listHoaDon) {
         this.context = context;
@@ -40,6 +47,9 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHolder
         holder.tvKhachHang.setText("Khách hàng: " + hoaDon.getTenKH());
         holder.tvNgayTao.setText("Ngày: " + formatDate(hoaDon.getNgayTao()));
         holder.tvTongTien.setText(String.format("%,d VNĐ", (int) hoaDon.getTongTien()));
+        holder.btnXoa.setOnClickListener(v -> {
+            if (actionListener != null) actionListener.onDelete(hoaDon, position);
+        });
     }
 
     @Override
@@ -55,6 +65,7 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvMaHD, tvKhachHang, tvNgayTao, tvTongTien;
+        ImageView btnXoa;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,6 +73,8 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHolder
             tvKhachHang = itemView.findViewById(R.id.tvKhachHang);
             tvNgayTao = itemView.findViewById(R.id.tvNgayTao);
             tvTongTien = itemView.findViewById(R.id.tvTongTien);
+            btnXoa = itemView.findViewById(R.id.btnXoaHD);
         }
     }
 }
+

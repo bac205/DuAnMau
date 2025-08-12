@@ -416,6 +416,24 @@ public class DbHelper extends SQLiteOpenHelper {
         return listHoaDon;
     }
 
+    /**
+     * Xóa hóa đơn và toàn bộ chi tiết hóa đơn liên quan theo mã hóa đơn
+     * Trả về số bản ghi bị xóa ở bảng HoaDon (0 hoặc 1)
+     */
+    public int deleteHoaDon(int maHD) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        int affected = 0;
+        try {
+            db.delete("ChiTietHD", "maHD=?", new String[]{String.valueOf(maHD)});
+            affected = db.delete("HoaDon", "maHD=?", new String[]{String.valueOf(maHD)});
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        return affected;
+    }
+
     // ================= Giỏ hàng CRUD =================
     public boolean isProductInCart(int maSP) {
         SQLiteDatabase db = getReadableDatabase();

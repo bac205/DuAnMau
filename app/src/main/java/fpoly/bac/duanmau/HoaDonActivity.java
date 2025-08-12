@@ -1,6 +1,7 @@
 package fpoly.bac.duanmau;
 
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class HoaDonActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         adapter = new HoaDonAdapter(this, listHoaDon);
+        adapter.setOnItemActionListener((hoaDon, position) -> confirmDelete(hoaDon.getMaHD(), position));
         rcHoaDon.setLayoutManager(new LinearLayoutManager(this));
         rcHoaDon.setAdapter(adapter);
     }
@@ -61,6 +63,30 @@ public class HoaDonActivity extends AppCompatActivity {
             tvEmpty.setVisibility(android.view.View.GONE);
             rcHoaDon.setVisibility(android.view.View.VISIBLE);
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void confirmDelete(int maHD, int position) {
+        new AlertDialog.Builder(this)
+                .setTitle("Xóa hóa đơn")
+                .setMessage("Bạn có chắc muốn xóa hóa đơn này?")
+                .setPositiveButton("Xóa", (d, w) -> doDelete(maHD, position))
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    private void doDelete(int maHD, int position) {
+        int affected = dbHelper.deleteHoaDon(maHD);
+        if (affected > 0) {
+            listHoaDon.remove(position);
+            adapter.notifyItemRemoved(position);
+            if (listHoaDon.isEmpty()) {
+                tvEmpty.setVisibility(android.view.View.VISIBLE);
+                rcHoaDon.setVisibility(android.view.View.GONE);
+            }
+            Toast.makeText(this, "Đã xóa hóa đơn", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Xóa thất bại", Toast.LENGTH_SHORT).show();
         }
     }
 
