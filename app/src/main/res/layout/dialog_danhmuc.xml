@@ -5,21 +5,33 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/edtMaDM"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mã danh mục sẽ tự sinh (DMxxx)"
-        android:textSize="12sp" />
+        android:hint="Mã danh mục"
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_text_background" />
 
     <EditText
         android:id="@+id/edtTenDM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Tên danh mục"
-        android:inputType="text" />
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_text_background" />
+
+    <EditText
+        android:id="@+id/edtHinhAnh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Đường dẫn hình ảnh (tùy chọn)"
+        android:inputType="text"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background" />
 
 </LinearLayout>
-
-
-
-

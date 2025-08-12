@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarDanhMuc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:title="Danh mục"
-        android:titleTextColor="#FFFFFF"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcDanhMuc"
-        android:layout_below="@+id/toolbarDanhMuc"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tìm kiếm danh mục..."
+            android:padding="12dp"
+            android:background="@drawable/edit_text_background"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcDanhMuc"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAddDM"
+        android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        android:contentDescription="Thêm danh mục"
-        android:backgroundTint="#009688" />
+        app:fabSize="normal" />
 
-</RelativeLayout>
-
-
-
-
+</LinearLayout>

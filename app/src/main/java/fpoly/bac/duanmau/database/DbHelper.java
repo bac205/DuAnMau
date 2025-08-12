@@ -391,6 +391,113 @@ public class DbHelper extends SQLiteOpenHelper {
         return db.insert("ChiTietHD", null, values);
     }
 
+    public java.util.ArrayList<fpoly.bac.duanmau.model.HoaDon> getAllHoaDon() {
+        java.util.ArrayList<fpoly.bac.duanmau.model.HoaDon> listHoaDon = new java.util.ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT * FROM HoaDon ORDER BY maHD DESC", null);
+        
+        if (cursor.moveToFirst()) {
+            do {
+                int maHD = cursor.getInt(0);
+                String maKH = cursor.getString(1);
+                String tenKH = cursor.getString(2);
+                String ngayTao = cursor.getString(3);
+                double tongTien = cursor.getDouble(4);
+                
+                fpoly.bac.duanmau.model.HoaDon hoaDon = new fpoly.bac.duanmau.model.HoaDon(maKH, tenKH);
+                hoaDon.setMaHD(maHD);
+                hoaDon.setTongTien(tongTien);
+                // TODO: Parse ngayTao string thành Date nếu cần
+                
+                listHoaDon.add(hoaDon);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return listHoaDon;
+    }
+
+    // ================= Giỏ hàng CRUD =================
+    public boolean isProductInCart(int maSP) {
+        SQLiteDatabase db = getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM GioHang WHERE maSP = ?", new String[]{String.valueOf(maSP)});
+        boolean exists = false;
+        if (cursor.moveToFirst()) {
+            exists = cursor.getInt(0) > 0;
+        }
+        cursor.close();
+        return exists;
+    }
+
+    public boolean addToCart(int maSP, String tenSP, double gia, int soLuong, String hinhAnh) {
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            android.content.ContentValues values = new android.content.ContentValues();
+            values.put("maSP", maSP);
+            values.put("tenSP", tenSP);
+            values.put("gia", gia);
+            values.put("soLuong", soLuong);
+            values.put("hinhAnh", hinhAnh);
+            
+            long result = db.insert("GioHang", null, values);
+            return result != -1;
+        } catch (Exception e) {
+            android.util.Log.e("DbHelper", "Lỗi khi thêm vào giỏ hàng: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean updateCartItemQuantity(int id, int soLuong) {
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            android.content.ContentValues values = new android.content.ContentValues();
+            values.put("soLuong", soLuong);
+            
+            int result = db.update("GioHang", values, "id = ?", new String[]{String.valueOf(id)});
+            return result > 0;
+        } catch (Exception e) {
+            android.util.Log.e("DbHelper", "Lỗi khi cập nhật số lượng: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean removeFromCart(int id) {
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            int result = db.delete("GioHang", "id = ?", new String[]{String.valueOf(id)});
+            return result > 0;
+        } catch (Exception e) {
+            android.util.Log.e("DbHelper", "Lỗi khi xóa khỏi giỏ hàng: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public java.util.ArrayList<fpoly.bac.duanmau.model.GioHang> getAllCartItems() {
+        java.util.ArrayList<fpoly.bac.duanmau.model.GioHang> cartItems = new java.util.ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT * FROM GioHang ORDER BY id", null);
+        
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                int maSP = cursor.getInt(1);
+                String tenSP = cursor.getString(2);
+                double gia = cursor.getDouble(3);
+                int soLuong = cursor.getInt(4);
+                String hinhAnh = cursor.getString(5);
+                
+                fpoly.bac.duanmau.model.GioHang item = new fpoly.bac.duanmau.model.GioHang(id, maSP, tenSP, gia, soLuong, hinhAnh);
+                cartItems.add(item);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return cartItems;
+    }
+
+    public void clearCart() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("GioHang", null, null);
+    }
+
     // Method debug để kiểm tra database
     public void debugDatabase() {
         SQLiteDatabase db = getReadableDatabase();

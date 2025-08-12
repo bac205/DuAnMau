@@ -65,6 +65,14 @@
             android:layout_toStartOf="@id/btnSua"
             android:layout_alignTop="@id/tvTenSanPham"
             android:layout_marginEnd="8dp" />
+        <ImageView
+            android:id="@+id/btnGioHang"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_shopping"
+            android:layout_toStartOf="@id/btnXoa"
+            android:layout_alignTop="@id/tvTenSanPham"
+            android:layout_marginEnd="8dp" />
 
 
 

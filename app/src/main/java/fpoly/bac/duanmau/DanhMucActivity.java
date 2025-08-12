@@ -1,16 +1,22 @@
 package fpoly.bac.duanmau;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -21,125 +27,103 @@ import fpoly.bac.duanmau.model.DanhMuc;
 public class DanhMucActivity extends AppCompatActivity {
     private RecyclerView rcDanhMuc;
     private DanhMucAdapter adapter;
-    private ArrayList<DanhMuc> list;
-    private com.google.android.material.floatingactionbutton.FloatingActionButton btnAddDM;
+    private ArrayList<DanhMuc> listDM;
+    private ArrayList<DanhMuc> fullListDM;
     private DbHelper dbHelper;
-    private int nextIndex = 1;
+    private EditText edtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_danhmuc);
+        
         Toolbar toolbar = findViewById(R.id.toolbarDanhMuc);
         setSupportActionBar(toolbar);
 
         rcDanhMuc = findViewById(R.id.rcDanhMuc);
-        rcDanhMuc.setLayoutManager(new LinearLayoutManager(this));
+        edtSearch = findViewById(R.id.edtSearch);
+        FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
         dbHelper = new DbHelper(this);
 
-        list = dbHelper.getAllDanhMucQL();
-        // Xác định nextIndex từ dữ liệu hiện có
-        for (DanhMuc dm : list) {
-            try {
-                if (dm.getMaDM() != null && dm.getMaDM().startsWith("DM")) {
-                    int num = Integer.parseInt(dm.getMaDM().substring(2));
-                    if (num >= nextIndex) nextIndex = num + 1;
-                }
-            } catch (Exception ignored) {}
-        }
-
-        adapter = new DanhMucAdapter(this, list);
+        // Load danh mục từ database
+        fullListDM = dbHelper.getAllDanhMucQL();
+        listDM = new ArrayList<>(fullListDM);
+        
+        // Tạo adapter và set layout
+        adapter = new DanhMucAdapter(this, listDM);
+        rcDanhMuc.setLayoutManager(new LinearLayoutManager(this));
         rcDanhMuc.setAdapter(adapter);
 
-        btnAddDM = findViewById(R.id.btnAddDM);
-        btnAddDM.setOnClickListener(v -> showAddDialog());
+        // Thêm mới
+        btnAdd.setOnClickListener(v -> showAddDialog());
 
-        adapter.setOnItemActionListener(new DanhMucAdapter.OnItemActionListener() {
+        // Tìm kiếm theo tên danh mục
+        edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onEdit(DanhMuc dm, int position) {
-                showEditDialog(dm, position);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().toLowerCase().trim();
+                filterDanhMuc(query);
             }
 
             @Override
-            public void onDelete(DanhMuc dm, int position) {
-                confirmDelete(dm, position);
-            }
+            public void afterTextChanged(Editable s) {}
         });
     }
 
+    private void filterDanhMuc(String query) {
+        listDM.clear();
+        if (query.isEmpty()) {
+            listDM.addAll(fullListDM);
+        } else {
+            for (DanhMuc dm : fullListDM) {
+                if (dm.getTen().toLowerCase().contains(query)) {
+                    listDM.add(dm);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     private void showAddDialog() {
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_danhmuc, null);
-        EditText edtTen = view.findViewById(R.id.edtTenDM);
-        new AlertDialog.Builder(this)
-                .setTitle("Thêm danh mục")
-                .setView(view)
-                .setPositiveButton("Lưu", (dialog, which) -> {
-                    String ten = edtTen.getText().toString().trim();
-                    if (ten.isEmpty()) {
-                        Toast.makeText(this, "Vui lòng nhập tên danh mục", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_danhmuc, null);
+        
+        EditText edtMaDM = dialogView.findViewById(R.id.edtMaDM);
+        EditText edtTenDM = dialogView.findViewById(R.id.edtTenDM);
+        EditText edtHinhAnh = dialogView.findViewById(R.id.edtHinhAnh);
+
+        builder.setView(dialogView)
+                .setTitle("Thêm Danh Mục Mới")
+                .setPositiveButton("Thêm", (dialog, which) -> {
+                    String maDM = edtMaDM.getText().toString().trim();
+                    String tenDM = edtTenDM.getText().toString().trim();
+                    String hinhAnh = edtHinhAnh.getText().toString().trim();
+
+                    if (maDM.isEmpty() || tenDM.isEmpty()) {
+                        Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    String ma = String.format("DM%03d", nextIndex++);
-                    DanhMuc dm = new DanhMuc(ma, ten, "img_danhmuc");
-                    long row = dbHelper.insertDanhMucQL(dm);
-                    if (row > 0) {
-                        list.add(0, dm);
-                        adapter.notifyItemInserted(0);
-                        rcDanhMuc.scrollToPosition(0);
+
+                    DanhMuc newDM = new DanhMuc(maDM, tenDM, hinhAnh);
+                    if (dbHelper.insertDanhMucQL(newDM) > 0) {
+                        Toast.makeText(this, "Thêm danh mục thành công", Toast.LENGTH_SHORT).show();
+                        refreshData();
                     } else {
-                        Toast.makeText(this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Thêm danh mục thất bại", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
     }
 
-    private void showEditDialog(DanhMuc dm, int position) {
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_danhmuc, null);
-        EditText edtTen = view.findViewById(R.id.edtTenDM);
-        edtTen.setText(dm.getTen());
-        new AlertDialog.Builder(this)
-                .setTitle("Sửa danh mục " + dm.getMaDM())
-                .setView(view)
-                .setPositiveButton("Lưu", (dialog, which) -> {
-                    String ten = edtTen.getText().toString().trim();
-                    if (ten.isEmpty()) {
-                        Toast.makeText(this, "Vui lòng nhập tên danh mục", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    dm.setTen(ten);
-                    dm.setHinhAnh("img_danhmuc");
-                    int rows = dbHelper.updateDanhMucQL(dm);
-                    if (rows > 0) {
-                        list.set(position, dm);
-                        adapter.notifyItemChanged(position);
-                    } else {
-                        Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("Hủy", null)
-                .show();
-    }
-
-    private void confirmDelete(DanhMuc dm, int position) {
-        new AlertDialog.Builder(this)
-                .setTitle("Xoá danh mục")
-                .setMessage("Bạn có chắc muốn xoá " + dm.getMaDM() + "?")
-                .setPositiveButton("Xoá", (dialog, which) -> {
-                    int rows = dbHelper.deleteDanhMucQL(dm.getMaDM());
-                    if (rows > 0) {
-                        list.remove(position);
-                        adapter.notifyItemRemoved(position);
-                        adapter.notifyItemRangeChanged(position, list.size() - position);
-                    } else {
-                        Toast.makeText(this, "Xoá thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("Hủy", null)
-                .show();
+    private void refreshData() {
+        fullListDM = dbHelper.getAllDanhMucQL();
+        listDM.clear();
+        listDM.addAll(fullListDM);
+        adapter.notifyDataSetChanged();
     }
 }
-
-
-
-

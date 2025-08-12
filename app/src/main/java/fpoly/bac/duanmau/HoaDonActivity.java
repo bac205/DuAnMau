@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import fpoly.bac.duanmau.adapter.HoaDonAdapter;
 import fpoly.bac.duanmau.database.DbHelper;
 
 public class HoaDonActivity extends AppCompatActivity {
     private RecyclerView rcHoaDon;
     private TextView tvEmpty;
     private DbHelper dbHelper;
+    private HoaDonAdapter adapter;
+    private ArrayList<fpoly.bac.duanmau.model.HoaDon> listHoaDon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +30,10 @@ public class HoaDonActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         dbHelper = new DbHelper(this);
+        listHoaDon = new ArrayList<>();
         
         initViews();
+        setupRecyclerView();
         loadHoaDon();
     }
 
@@ -37,11 +42,34 @@ public class HoaDonActivity extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tvEmpty);
     }
 
+    private void setupRecyclerView() {
+        adapter = new HoaDonAdapter(this, listHoaDon);
+        rcHoaDon.setLayoutManager(new LinearLayoutManager(this));
+        rcHoaDon.setAdapter(adapter);
+    }
+
     private void loadHoaDon() {
         // Lấy danh sách hóa đơn từ database
-        // TODO: Implement adapter và RecyclerView cho hóa đơn
-        // Hiện tại chỉ hiển thị thông báo
-        tvEmpty.setVisibility(android.view.View.VISIBLE);
-        tvEmpty.setText("Chưa có hóa đơn nào.\nHãy mua hàng để tạo hóa đơn!");
+        listHoaDon.clear();
+        listHoaDon.addAll(dbHelper.getAllHoaDon());
+        
+        if (listHoaDon.isEmpty()) {
+            tvEmpty.setVisibility(android.view.View.VISIBLE);
+            rcHoaDon.setVisibility(android.view.View.GONE);
+            tvEmpty.setText("Chưa có hóa đơn nào.\nHãy mua hàng để tạo hóa đơn!");
+        } else {
+            tvEmpty.setVisibility(android.view.View.GONE);
+            rcHoaDon.setVisibility(android.view.View.VISIBLE);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh danh sách hóa đơn khi quay lại
+        loadHoaDon();
     }
 }
+
+

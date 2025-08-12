@@ -10,6 +10,16 @@
         android:title="Quản lý sản phẩm"
         android:titleTextColor="#FFFFFF"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <ImageButton
+        android:id="@+id/btnGioHang"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/toolbarSanPham"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="8dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_giohang"
+        android:contentDescription="Giỏ hàng" />
 
     <!-- Thanh tìm kiếm -->
     <EditText
@@ -57,5 +67,6 @@
         android:src="@drawable/ic_add"
         android:contentDescription="Thêm sản phẩm"
         android:backgroundTint="#C22BDC" />
+
 
 </RelativeLayout>

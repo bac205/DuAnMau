@@ -39,7 +39,7 @@ public class GioHangActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         dbHelper = new DbHelper(this);
-        listGioHang = dbHelper.getAllGioHang();
+        listGioHang = dbHelper.getAllCartItems();
 
         initViews();
         setupRecyclerView();
@@ -62,7 +62,7 @@ public class GioHangActivity extends AppCompatActivity {
 
         adapter.setOnQuantityChangeListener((gh, newQuantity) -> {
             gh.setSoLuong(newQuantity);
-            dbHelper.updateGioHang(gh);
+            dbHelper.updateCartItemQuantity(gh.getId(), newQuantity);
             adapter.notifyDataSetChanged();
             updateTongTien();
         });
@@ -72,7 +72,7 @@ public class GioHangActivity extends AppCompatActivity {
                     .setTitle("Xóa sản phẩm")
                     .setMessage("Bạn có chắc muốn xóa " + gh.getTenSP() + "?")
                     .setPositiveButton("Xóa", (dialog, which) -> {
-                        dbHelper.deleteGioHang(gh.getId());
+                        dbHelper.removeFromCart(gh.getId());
                         listGioHang.remove(position);
                         adapter.notifyItemRemoved(position);
                         updateTongTien();
@@ -131,7 +131,7 @@ public class GioHangActivity extends AppCompatActivity {
                         }
                         
                         // Xóa giỏ hàng
-                        dbHelper.clearGioHang();
+                        dbHelper.clearCart();
                         listGioHang.clear();
                         adapter.notifyDataSetChanged();
                         updateTongTien();
@@ -164,8 +164,10 @@ public class GioHangActivity extends AppCompatActivity {
         super.onResume();
         // Refresh giỏ hàng khi quay lại
         listGioHang.clear();
-        listGioHang.addAll(dbHelper.getAllGioHang());
+        listGioHang.addAll(dbHelper.getAllCartItems());
         adapter.notifyDataSetChanged();
         updateTongTien();
     }
 }
+
+

@@ -76,16 +76,29 @@ public class SanPhamActivity extends AppCompatActivity {
         rcSanPham.setLayoutManager(new LinearLayoutManager(this));
         rcSanPham.setAdapter(adapter);
         
-        // Tạo adapter và set layout
-        adapter = new SanPhamAdapter(this, listSP);
-        rcSanPham.setLayoutManager(new LinearLayoutManager(this));
-        rcSanPham.setAdapter(adapter);
-        
         android.util.Log.d("SanPhamActivity", "=== HOÀN THÀNH SETUP ===");
         android.util.Log.d("SanPhamActivity", "Adapter item count: " + adapter.getItemCount());
 
         // Thêm mới
         btnAdd.setOnClickListener(v -> showAddDialog());
+        
+        // Set listener cho adapter
+        adapter.setOnItemActionListener(new SanPhamAdapter.OnItemActionListener() {
+            @Override
+            public void onDelete(Sanpham sp, int position) {
+                showDeleteDialog(sp, position);
+            }
+
+            @Override
+            public void onEdit(Sanpham sp, int position) {
+                showEditDialog(sp, position);
+            }
+
+            @Override
+            public void onAddToCart(Sanpham sp, int position) {
+                addToCart(sp);
+            }
+        });
 
 
 
@@ -106,20 +119,7 @@ public class SanPhamActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Sửa/Xoá từ adapter
-        adapter.setOnItemActionListener(new SanPhamAdapter.OnItemActionListener() {
-            @Override
-            public void onDelete(Sanpham sp, int position) {
-                confirmDelete(sp, position);
-            }
-
-            @Override
-            public void onEdit(Sanpham sp, int position) {
-                showEditDialog(sp, position);
-            }
-
-
-        });
+        // Sửa/Xoá từ adapter - đã được xử lý ở trên
     }
 
     private void showAddDialog() {
@@ -208,7 +208,7 @@ public class SanPhamActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void confirmDelete(Sanpham sp, int position) {
+    private void showDeleteDialog(Sanpham sp, int position) {
         new AlertDialog.Builder(this)
                 .setTitle("Xoá sản phẩm")
                 .setMessage("Bạn có chắc muốn xoá sản phẩm này?")
@@ -230,6 +230,21 @@ public class SanPhamActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
+    }
+
+    private void addToCart(Sanpham sp) {
+        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+        if (dbHelper.isProductInCart(sp.getMaSP())) {
+            Toast.makeText(this, "Sản phẩm đã có trong giỏ hàng!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Thêm sản phẩm vào giỏ hàng với số lượng mặc định là 1
+        if (dbHelper.addToCart(sp.getMaSP(), sp.getTenSP(), sp.getGia(), 1, sp.getHinhAnh())) {
+            Toast.makeText(this, "Đã thêm " + sp.getTenSP() + " vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Thêm vào giỏ hàng thất bại!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void applyFilter(String query) {

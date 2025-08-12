@@ -26,10 +26,11 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
         this.list = list;
     }
 
-    // Interface callback cho sự kiện xóa và sửa
+    // Interface callback cho sự kiện xóa, sửa và thêm vào giỏ hàng
     public interface OnItemActionListener {
         void onDelete(Sanpham sp, int position);
         void onEdit(Sanpham sp, int position);
+        void onAddToCart(Sanpham sp, int position);
     }
     private OnItemActionListener actionListener;
     public void setOnItemActionListener(OnItemActionListener listener) {
@@ -39,7 +40,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgSP;
         TextView tvTenSP, tvGia;
-        ImageView btnXoa, btnSua;
+        ImageView btnXoa, btnSua, btnGioHang;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgSP = itemView.findViewById(R.id.imgSanPham);
@@ -47,6 +48,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
             tvGia = itemView.findViewById(R.id.tvGiaSanPham);
             btnXoa = itemView.findViewById(R.id.btnXoa);
             btnSua = itemView.findViewById(R.id.btnSua);
+            btnGioHang = itemView.findViewById(R.id.btnGioHang);
         }
     }
 
@@ -74,6 +76,11 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
         // Sự kiện sửa
         holder.btnSua.setOnClickListener(v -> {
             if (actionListener != null) actionListener.onEdit(sp, position);
+        });
+        
+        // Sự kiện thêm vào giỏ hàng
+        holder.btnGioHang.setOnClickListener(v -> {
+            if (actionListener != null) actionListener.onAddToCart(sp, position);
         });
 
 

@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView imgDanhMuc = findViewById(R.id.imgDanhMuc);
         ImageView imgKhachHang = findViewById(R.id.imgKhachHang);
         ImageView imgHoaDon = findViewById(R.id.imgHoaDon);
+        ImageView imgGioHang = findViewById(R.id.imgGioHang);
 
         imgSanPham.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, HoaDonActivity.class);
+                startActivity(intent);
+            }
+        });
+        
+        imgGioHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GioHangActivity.class);
                 startActivity(intent);
             }
         });
