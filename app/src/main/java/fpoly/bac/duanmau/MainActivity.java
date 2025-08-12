@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView imgGioHang = findViewById(R.id.imgGioHang);
         imgDoanhThu = findViewById(R.id.imgDoanhThu);
         ImageView imgTopKhachHang = findViewById(R.id.imgTopKhachHang);
+        ImageView imgLogout = findViewById(R.id.imgLogout);
 
         imgSanPham.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +105,13 @@ imgTopKhachHang.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         Intent intent1 = new Intent(MainActivity.this, TopKhachHang.class);
+        startActivity(intent1);
+    }
+});
+imgLogout.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent1 = new Intent(MainActivity.this, Login.class);
         startActivity(intent1);
     }
 });
