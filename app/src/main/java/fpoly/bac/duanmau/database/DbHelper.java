@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "Supermarket.db";
-    public static final int DB_VERSION = 8;
+    public static final int DB_VERSION = 9;
 
     public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -141,6 +141,47 @@ public class DbHelper extends SQLiteOpenHelper {
             if (cursor != null) cursor.close();
         }
         return tongDoanhThu;
+    }
+
+    // Lấy chi tiết hóa đơn theo mã hóa đơn
+    public java.util.ArrayList<fpoly.bac.duanmau.model.ChiTietHD> getChiTietHoaDonByMaHD(int maHD) {
+        java.util.ArrayList<fpoly.bac.duanmau.model.ChiTietHD> list = new java.util.ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT maSP, tenSP, gia, soLuong, thanhTien FROM ChiTietHD WHERE maHD = ? ORDER BY id",
+                new String[]{String.valueOf(maHD)}
+        );
+        if (cursor.moveToFirst()) {
+            do {
+                int maSP = cursor.getInt(0);
+                String tenSP = cursor.getString(1);
+                double gia = cursor.getDouble(2);
+                int soLuong = cursor.getInt(3);
+                double thanhTien = cursor.getDouble(4);
+                list.add(new fpoly.bac.duanmau.model.ChiTietHD(maSP, tenSP, gia, soLuong, thanhTien));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    // Top 3 sản phẩm bán chạy (theo tổng số lượng trong ChiTietHD)
+    public java.util.ArrayList<String> getTop3SanPhamBanChay() {
+        java.util.ArrayList<String> list = new java.util.ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT tenSP, SUM(soLuong) as tongSL FROM ChiTietHD GROUP BY maSP, tenSP ORDER BY tongSL DESC LIMIT 3",
+                null
+        );
+        if (cursor.moveToFirst()) {
+            do {
+                String tenSP = cursor.getString(0);
+                int tongSL = cursor.getInt(1);
+                list.add(tenSP + " - SL: " + tongSL);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
     }
     public List<String> getTop3KhachHang() {
         List<String> list = new ArrayList<>();

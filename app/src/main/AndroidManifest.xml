@@ -12,8 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DUANMAU"
         tools:targetApi="31">
+
         <activity
             android:name=".TopKhachHang"
+            android:exported="false" />
+        <activity
+            android:name=".TopSanPhamActivity"
             android:exported="false" />
         <activity
             android:name=".TongDoanhThu"
@@ -27,6 +31,7 @@
         <activity android:name=".KhachHangActivity" />
         <activity android:name=".GioHangActivity" />
         <activity android:name=".HoaDonActivity" />
+        <activity android:name=".HoaDonChiTietActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />

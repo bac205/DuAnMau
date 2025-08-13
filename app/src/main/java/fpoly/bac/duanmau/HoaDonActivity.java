@@ -45,7 +45,17 @@ public class HoaDonActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         adapter = new HoaDonAdapter(this, listHoaDon);
-        adapter.setOnItemActionListener((hoaDon, position) -> confirmDelete(hoaDon.getMaHD(), position));
+        adapter.setOnItemActionListener(new HoaDonAdapter.OnItemActionListener() {
+            @Override
+            public void onDelete(fpoly.bac.duanmau.model.HoaDon hoaDon, int position) {
+                confirmDelete(hoaDon.getMaHD(), position);
+            }
+
+            @Override
+            public void onClick(fpoly.bac.duanmau.model.HoaDon hoaDon, int position) {
+                openChiTietHoaDon(hoaDon.getMaHD());
+            }
+        });
         rcHoaDon.setLayoutManager(new LinearLayoutManager(this));
         rcHoaDon.setAdapter(adapter);
     }
@@ -64,6 +74,12 @@ public class HoaDonActivity extends AppCompatActivity {
             rcHoaDon.setVisibility(android.view.View.VISIBLE);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    private void openChiTietHoaDon(int maHD) {
+        android.content.Intent intent = new android.content.Intent(this, fpoly.bac.duanmau.HoaDonChiTietActivity.class);
+        intent.putExtra("maHD", maHD);
+        startActivity(intent);
     }
 
     private void confirmDelete(int maHD, int position) {

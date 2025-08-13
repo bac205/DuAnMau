@@ -23,6 +23,7 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHolder
 
     public interface OnItemActionListener {
         void onDelete(HoaDon hoaDon, int position);
+        void onClick(HoaDon hoaDon, int position);
     }
     private OnItemActionListener actionListener;
     public void setOnItemActionListener(OnItemActionListener listener) { this.actionListener = listener; }
@@ -49,6 +50,10 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHolder
         holder.tvTongTien.setText(String.format("%,d VNĐ", (int) hoaDon.getTongTien()));
         holder.btnXoa.setOnClickListener(v -> {
             if (actionListener != null) actionListener.onDelete(hoaDon, position);
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            if (actionListener != null) actionListener.onClick(hoaDon, position);
         });
     }
 
