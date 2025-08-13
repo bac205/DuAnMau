@@ -1,129 +1,137 @@
-package fpoly.bac.duanmau;
+    package fpoly.bac.duanmau;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+    import android.content.Intent;
+    import android.os.Bundle;
+    import android.view.View;
+    import android.widget.ImageView;
+    import android.widget.LinearLayout;
+    import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+    import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
-    ImageView imgDoanhThu;
-    ImageView imgSanPham;
-    TextView tvWelcome;
-    LinearLayout layoutQuanLyNV, layoutThongKe;
+    public class MainActivity extends AppCompatActivity {
+        ImageView imgDoanhThu;
+        ImageView imgSanPham;
+        TextView tvWelcome;
+        LinearLayout layoutQuanLyNV, layoutThongKe;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
-        // Ánh xạ
-        tvWelcome = findViewById(R.id.tvWelcome);
-        layoutQuanLyNV = findViewById(R.id.layoutQuanLyNV);
-        layoutThongKe = findViewById(R.id.layoutThongKe);
+            // Ánh xạ
+            tvWelcome = findViewById(R.id.tvWelcome);
+            layoutQuanLyNV = findViewById(R.id.layoutQuanLyNV);
+            layoutThongKe = findViewById(R.id.layoutThongKe);
 
-        // Nhận role
-        Intent intent = getIntent();
-        String role = intent.getStringExtra("role");
+            // Nhận role
+            Intent intent = getIntent();
+            String role = intent.getStringExtra("role");
 
-        // Chào mừng
-        tvWelcome.setText("Xin chào, " + role);
+            // Chào mừng
+            tvWelcome.setText("Xin chào, " + role);
 
-        // Ẩn nếu là nhân viên
-        if ("nhanvien".equalsIgnoreCase(role)) {
-            layoutQuanLyNV.setVisibility(View.GONE);
-            layoutThongKe.setVisibility(View.GONE);
+            // Ẩn nếu là nhân viên
+            if ("nhanvien".equalsIgnoreCase(role)) {
+                layoutQuanLyNV.setVisibility(View.GONE);
+                layoutThongKe.setVisibility(View.GONE);
+            }
+            imgSanPham = findViewById(R.id.imgSanPham);
+            ImageView imgNhanVien = findViewById(R.id.imgNhanVien);
+            ImageView imgDanhMuc = findViewById(R.id.imgDanhMuc);
+            ImageView imgKhachHang = findViewById(R.id.imgKhachHang);
+            ImageView imgHoaDon = findViewById(R.id.imgHoaDon);
+            ImageView imgGioHang = findViewById(R.id.imgGioHang);
+            imgDoanhThu = findViewById(R.id.imgDoanhThu);
+            ImageView imgTopKhachHang = findViewById(R.id.imgTopKhachHang);
+            ImageView imgTopSanPham = findViewById(R.id.imgTopSanPham);
+            ImageView imgLogout = findViewById(R.id.imgLogout);
+            ImageView imgDoiMatKhau = findViewById(R.id.imgDoiMatKhau);
+
+            imgSanPham.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, SanPhamActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            imgNhanVien.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, NhanVienActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            imgDanhMuc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, DanhMucActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            imgKhachHang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, KhachHangActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            imgHoaDon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, HoaDonActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            imgGioHang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, GioHangActivity.class);
+                    startActivity(intent);
+                }
+            });
+            imgDoanhThu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent1 = new Intent(MainActivity.this, TongDoanhThu.class);
+                    startActivity(intent1);
+                }
+            });
+    imgTopKhachHang.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent1 = new Intent(MainActivity.this, TopKhachHang.class);
+            startActivity(intent1);
         }
-        imgSanPham = findViewById(R.id.imgSanPham);
-        ImageView imgNhanVien = findViewById(R.id.imgNhanVien);
-        ImageView imgDanhMuc = findViewById(R.id.imgDanhMuc);
-        ImageView imgKhachHang = findViewById(R.id.imgKhachHang);
-        ImageView imgHoaDon = findViewById(R.id.imgHoaDon);
-        ImageView imgGioHang = findViewById(R.id.imgGioHang);
-        imgDoanhThu = findViewById(R.id.imgDoanhThu);
-        ImageView imgTopKhachHang = findViewById(R.id.imgTopKhachHang);
-        ImageView imgTopSanPham = findViewById(R.id.imgTopSanPham);
-        ImageView imgLogout = findViewById(R.id.imgLogout);
+    });
+    imgTopSanPham.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent1 = new Intent(MainActivity.this, TopSanPhamActivity.class);
+            startActivity(intent1);
+        }
+    });
+    imgLogout.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent1 = new Intent(MainActivity.this, Login.class);
+            startActivity(intent1);
+        }
+    });
+    imgDoiMatKhau.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent1 = new Intent(MainActivity.this, DoiMatKhau.class);
+            startActivity(intent1);
+        }
+    });
 
-        imgSanPham.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SanPhamActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        imgNhanVien.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NhanVienActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        imgDanhMuc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DanhMucActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        imgKhachHang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, KhachHangActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        imgHoaDon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HoaDonActivity.class);
-                startActivity(intent);
-            }
-        });
-        
-        imgGioHang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GioHangActivity.class);
-                startActivity(intent);
-            }
-        });
-        imgDoanhThu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(MainActivity.this, TongDoanhThu.class);
-                startActivity(intent1);
-            }
-        });
-imgTopKhachHang.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Intent intent1 = new Intent(MainActivity.this, TopKhachHang.class);
-        startActivity(intent1);
+        }
     }
-});
-imgTopSanPham.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Intent intent1 = new Intent(MainActivity.this, TopSanPhamActivity.class);
-        startActivity(intent1);
-    }
-});
-imgLogout.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Intent intent1 = new Intent(MainActivity.this, Login.class);
-        startActivity(intent1);
-    }
-});
-
-    }
-}
 

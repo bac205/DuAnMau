@@ -1,13 +1,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="#D0E2F0">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="👤 Top 3 khách hàng"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/tvTopKH"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:background="#ADD6F8"
+        android:padding="16dp"
+        android:elevation="2dp"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/btnXemTopKH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Xem top khách hàng"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF" />
 </LinearLayout>

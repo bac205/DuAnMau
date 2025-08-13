@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DUANMAU"
         tools:targetApi="31">
-
+        <activity
+            android:name=".DoiMatKhau"
+            android:exported="false" />
         <activity
             android:name=".TopKhachHang"
             android:exported="false" />

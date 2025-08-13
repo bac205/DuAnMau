@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    android:backgroundTint="#DEEAF4">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -63,10 +64,10 @@
 
             <Button
                 android:id="@+id/btnGiam"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="15dp"
+                android:layout_height="30dp"
                 android:text="-"
-                android:textSize="18sp"
+                android:textSize="5sp"
                 android:textStyle="bold"
                 android:backgroundTint="#FF5722" />
 
@@ -82,10 +83,10 @@
 
             <Button
                 android:id="@+id/btnTang"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="15dp"
+                android:layout_height="30dp"
                 android:text="+"
-                android:textSize="18sp"
+                android:textSize="5sp"
                 android:textStyle="bold"
                 android:backgroundTint="#4CAF50" />
         </LinearLayout>

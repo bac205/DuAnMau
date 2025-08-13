@@ -43,7 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chọn KH"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:backgroundTint="#82DC1A"/>
     </LinearLayout>
 
     <!-- RecyclerView giỏ hàng -->

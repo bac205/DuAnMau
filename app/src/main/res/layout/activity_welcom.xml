@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#E9DF88">
+    android:background="#C6E0F6">
 
     <ImageView
         android:id="@+id/imgLogo"

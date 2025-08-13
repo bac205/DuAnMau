@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:padding="24dp"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:backgroundTint="#C5D7E6">
 
     <!-- Ảnh siêu thị -->
     <ImageView
@@ -44,5 +45,6 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập" />
+        android:text="Đăng nhập"
+        android:backgroundTint="#0CA7EF"/>
 </LinearLayout>
